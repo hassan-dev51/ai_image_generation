@@ -61,7 +61,7 @@ export async function POST(req: Request) {
   if (eventType === "user.created") {
     const { id, email_addresses, image_url, first_name, last_name, username } =
       evt.data;
-    //this user object will be send to the database and we have already created mongoose schema for these fields
+    //this user object will be send to the database
     const user = {
       clerkId: id,
       email: email_addresses[0].email_address,
