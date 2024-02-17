@@ -1,13 +1,13 @@
 import { Schema, models, model } from "mongoose";
-export interface User {
+export interface UserTypes {
   clerkId: string;
   email: string;
   username: string;
   photo: string;
   firstName?: string;
   lastName?: string;
-  planId: number;
-  creditBalance: number;
+  planId?: number;
+  creditBalance?: number;
 }
 
 const user = new Schema({

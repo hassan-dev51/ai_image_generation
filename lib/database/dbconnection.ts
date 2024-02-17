@@ -27,7 +27,7 @@ export const dbConnection = async () => {
     cached.promise ||
     mongoose.connect(MONDODB_URL, {
       dbName: "imagegeneration",
-      bufferCommands: true,
+      bufferCommands: false,
     });
 
   cached.conn = await cached.promise;
