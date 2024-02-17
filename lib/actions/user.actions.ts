@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import User, { UserTypes } from "@/lib/database/models/user.schema";
+import UserSchema, { UserTypes } from "@/lib/database/models/user.schema";
 
 import { dbConnection } from "../database/dbconnection";
 
@@ -17,7 +17,7 @@ export async function createUser(user: UserTypes) {
   try {
     await dbConnection();
 
-    const newUser = await User.create(user);
+    const newUser = await UserSchema.create(user);
 
     return JSON.parse(JSON.stringify(newUser));
   } catch (error) {
@@ -31,7 +31,7 @@ export async function getUserById(userId: string) {
   try {
     await dbConnection();
 
-    const user = await User.findOne({ clerkId: userId });
+    const user = await UserSchema.findOne({ clerkId: userId });
 
     if (!user) throw new Error("User not found");
 
@@ -47,7 +47,7 @@ export async function updateUser(clerkId: string, user: UpdateUserParams) {
   try {
     await dbConnection();
 
-    const updatedUser = await User.findOneAndUpdate({ clerkId }, user, {
+    const updatedUser = await UserSchema.findOneAndUpdate({ clerkId }, user, {
       new: true,
     });
 
@@ -66,14 +66,14 @@ export async function deleteUser(clerkId: string) {
     await dbConnection();
 
     // Find user to delete
-    const userToDelete = await User.findOne({ clerkId });
+    const userToDelete = await UserSchema.findOne({ clerkId });
 
     if (!userToDelete) {
       throw new Error("User not found");
     }
 
     // Delete user
-    const deletedUser = await User.findByIdAndDelete(userToDelete._id);
+    const deletedUser = await UserSchema.findByIdAndDelete(userToDelete._id);
     revalidatePath("/");
 
     return deletedUser ? JSON.parse(JSON.stringify(deletedUser)) : null;
@@ -88,7 +88,7 @@ export async function updateCredits(userId: string, creditFee: number) {
   try {
     await dbConnection();
 
-    const updatedUserCredits = await User.findOneAndUpdate(
+    const updatedUserCredits = await UserSchema.findOneAndUpdate(
       { _id: userId },
       { $inc: { creditBalance: creditFee } },
       { new: true }

@@ -1,6 +1,6 @@
 import mongoose, { Mongoose } from "mongoose";
 
-const MONDODB_URL = process.env.MONGODB_URL;
+const MONGODB_URL = process.env.MONGODB_URL;
 
 interface MongooseConnection {
   conn: Mongoose | null;
@@ -11,7 +11,7 @@ interface MongooseConnection {
 
 let cached: MongooseConnection = (global as any).mongoose;
 
-if (!cached.conn) {
+if (!cached) {
   cached = (global as any).mongoose = {
     conn: null,
     promise: null,
@@ -21,11 +21,11 @@ if (!cached.conn) {
 export const dbConnection = async () => {
   if (cached.conn) return cached.conn;
 
-  if (!MONDODB_URL) throw new Error("Connection failed due to invalid string");
+  if (!MONGODB_URL) throw new Error("Connection failed due to invalid string");
 
   cached.promise =
     cached.promise ||
-    mongoose.connect(MONDODB_URL, {
+    mongoose.connect(MONGODB_URL, {
       dbName: "imagegeneration",
       bufferCommands: false,
     });
